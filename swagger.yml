@@ -1,14 +1,11 @@
 ---
 swagger: "2.0"
 info:
-  version: "2017-10-19T19:39:35Z"
+  version: "2017-10-19T19:49:26Z"
   title: "WebDevTask"
-
 host: "devtask.t12y.net"
-basePath: "/"
 schemes:
 - "https"
-
 paths:
   /assets:
     get:
@@ -19,7 +16,6 @@ paths:
           description: "200 response"
           schema:
             $ref: "#/definitions/AssetsList"
-    
     options:
       consumes:
       - "application/json"
@@ -35,17 +31,23 @@ paths:
               type: "string"
             Access-Control-Allow-Headers:
               type: "string"
-  
   /results:
     post:
+      consumes:
+      - "application/json"
       produces:
       - "application/json"
+      parameters:
+      - in: "body"
+        name: "PuzzleResult"
+        required: true
+        schema:
+          $ref: "#/definitions/PuzzleResult"
       responses:
         200:
           description: "200 response"
           schema:
             $ref: "#/definitions/ResultResponse"
-    
     options:
       consumes:
       - "application/json"
@@ -61,16 +63,19 @@ paths:
               type: "string"
             Access-Control-Allow-Headers:
               type: "string"
-
 definitions:
-
   ResultResponse:
     type: "object"
     properties:
       msg:
         type: "string"
     title: "ResultResponse"
-
+  PuzzleResult:
+    type: "object"
+    properties:
+      time:
+        type: "number"
+    title: "PuzzleResult"
   AssetsList:
     title: "AssetList"
     type: "array"
