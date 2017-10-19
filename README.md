@@ -10,8 +10,8 @@ If you're unfamiliar with the memory card game you can [see an example here](htt
 Rules
 ---------------------
 -   You can use any code resource you like but please cite your sources
--   You are free to use any stock assets you like
-
+-   For each game, you need to pull new assets from /assets API (see swagger.yml)
+-   After each game, report results using /results API (see swagger.yml) and display returned message on the screen
 
 
 Deliverables
