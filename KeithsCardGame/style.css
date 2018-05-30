@@ -1,0 +1,126 @@
+body {
+    font-family: 'Comic Sans MS';
+    margin-left: 5vw;
+    margin-right: 5vw;
+}
+
+h1 {
+    margin-top: 1em;
+    margin-bottom: 1em;
+    color: darkred;
+    text-align: center;
+}
+
+h2 {
+    color: darkblue;
+    margin: 1em;
+    text-align: center;
+}
+
+p {
+    color: darkslategray;
+    text-align: center;
+}
+
+a {
+    display: block;
+    text-align: center;
+}
+
+.playbutton {
+    background-color: darkgreen;
+    font-family: 'Comic Sans MS';
+    font-size: 20px;
+    border-radius: 1em;
+    color: white;
+    padding: 1em 10em;
+    margin: 0 auto;
+    text-decoration: none;
+    display: block;
+    margin: 0 auto;
+}
+
+.div-table {
+    display: table;  
+    border-spacing: 1em;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.div-table-col {
+    display: table-column;  
+}
+
+.div-table-row {
+    display: table-row;
+}
+
+.div-table-row div {
+    display: table-cell;
+}
+
+.cardgame {
+    background-color: clear;
+    padding-top: 1em;
+    align-content: center;
+}
+
+.card {
+    width: 10vw;
+    height: 15vw;
+    border-radius: 1em;
+    border-color: black;
+    border-width: medium;
+    border-style: solid;
+    background-color:cadetblue
+}
+
+.card img {
+    width: inherit;
+    height: inherit;
+    vertical-align: middle;
+    border-radius: 1em;
+    opacity: 0;
+}
+
+.flipped {
+    animation-name: flip;
+    animation-duration: .5s;
+}
+
+.flipped img {
+    position: relative;
+    opacity: 1;
+}
+
+.unflipped {
+    animation-name: unflip;
+    animation-duration: .5s;
+}
+
+.unflipped img {
+    position: relative;
+    opacity: 0;
+}
+
+@keyframes flip {
+    0%   {
+        -webkit-transform: rotateY(90deg);
+        transform: rotateY(90deg);
+    }
+    100% {
+        -webkit-transform: rotateY(0deg);
+        transform: rotateY(0deg);
+    }
+}
+
+@keyframes unflip {
+    0%   {
+        -webkit-transform: rotateY(90deg);
+        transform: rotateY(90deg);
+    }
+    100% {
+        -webkit-transform: rotateY(0deg);
+        transform: rotateY(0deg);
+    }
+}
