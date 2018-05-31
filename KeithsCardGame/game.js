@@ -1,14 +1,19 @@
 'use strict';
 
 // Settings
-var maxPairs = 5
+var maxPairs = 5;
 
 // Variables
-var deck = []
-var flipped = []
-var matched = []
-var startTime = 0
-var timer
+var initialSetup = true;
+var deck = [];
+var flipped = [];
+var matched = [];
+var startTime = 0;
+var timer;
+
+// Audio
+var matchSound;
+var victorySound;
 
 // Model
 function Card(url, ind) {
@@ -20,7 +25,17 @@ function Card(url, ind) {
 
 // User Interaction: Clicked Index Play Button
 function playButtonClicked() {
+    showLoading();
     getAssets();
+    if (initialSetup) {
+        matchSound = new sound("bing.m4a");
+        victorySound = new sound("oooyeah.m4a");
+        initialSetup = false;
+    }
+}
+
+function showLoading() {
+    document.getElementById("game").innerHTML = "<div class=\"loader\"> <img src=\"loader.gif\" alt=\"Loading\"> </div>";
 }
 
 // Called From API Response
@@ -31,6 +46,7 @@ function setupGame(response) {
     buildDeck(cards);
     updateMatchedMessage();
     startTime = new Date().getTime();
+    clearInterval(timer);
     timer = setInterval(clockTick, 1000);
 }
 
@@ -126,10 +142,10 @@ function cardClicked() {
         unflipBadMatch();
         flipCard(card);
         flipped.push(card);
+        checkForMatch();
+        updateMatchedMessage();
+        checkForWin();
     }
-    checkForMatch();
-    updateMatchedMessage();
-    checkForWin();
 }
 
 function getCardForIndex(index) {
@@ -171,6 +187,7 @@ function checkForMatch() {
             matched.push(card_a);
             matched.push(card_b);  
             flipped = [];
+            matchSound.play();
         } 
     }
 }
@@ -183,5 +200,24 @@ function checkForWin() {
         var body = {time:timeElapsed};
         document.getElementById("time").innerHTML = "You finished in: " + secondsSinceGameStarted() + " Seconds";
         postResults(body);
+        victorySound.play();
+    }
+}
+
+// AUDIO
+
+// Reference: https://www.w3schools.com/graphics/game_sound.asp
+function sound(src) {
+    this.sound = document.createElement("audio");
+    this.sound.src = src;
+    this.sound.setAttribute("preload", "auto");
+    this.sound.setAttribute("controls", "none");
+    this.sound.style.display = "none";
+    document.body.appendChild(this.sound);
+    this.play = function(){
+        this.sound.play();
+    }
+    this.stop = function(){
+        this.sound.pause();
     }
 }

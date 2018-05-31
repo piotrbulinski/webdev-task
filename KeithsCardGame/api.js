@@ -26,6 +26,7 @@ function getAssets() {
     };
     xhttp.onerror = function () {
         alert('Woops, there was an error making the request.');
+        loadStaticAssets();
     };
     xhttp.send();
 }

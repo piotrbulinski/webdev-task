@@ -48,6 +48,10 @@ a {
     display: block;
 }
 
+.loader {
+    text-align: center;
+}
+
 .timer {
     display: block;
     text-align: center;
