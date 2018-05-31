@@ -1,11 +1,16 @@
 'use strict';
 
+// Settings
+var maxPairs = 5
+
+// Variables
 var deck = []
 var flipped = []
 var matched = []
 var startTime = 0
-var maxPairs = 5
+var timer
 
+// Model
 function Card(url, ind) {
     this.imgurl = url;
     this.index = ind;
@@ -13,10 +18,12 @@ function Card(url, ind) {
     this.element;
 }
 
+// User Interaction: Clicked Index Play Button
 function playButtonClicked() {
     getAssets();
 }
 
+// Called From API Response
 function setupGame(response) {
     var cards = buildCards(response);
     cards = shuffle(cards);
@@ -24,6 +31,7 @@ function setupGame(response) {
     buildDeck(cards);
     updateMatchedMessage();
     startTime = new Date().getTime();
+    timer = setInterval(clockTick, 1000);
 }
 
 function buildCards(array) {
@@ -82,30 +90,6 @@ function buildDeck(array) {
     matched = [];
 }
 
-function cardClicked() {
-    var card = getCardForIndex(this.getAttributeNode("card_index").nodeValue);
-    if (!card.isFlipped) {
-        unflipBadMatch();
-        flipCard(card);
-        flipped.push(card);
-    }
-    checkForMatch();
-    updateMatchedMessage();
-    checkForWin();
-}
-
-function flipCard(card) {
-    if (card.isFlipped) {
-        card.element.classList.remove("flipped");
-        card.element.classList.add("unflipped");
-        card.isFlipped = false;
-    } else {
-        card.element.classList.remove("unflipped");
-        card.element.classList.add("flipped");
-        card.isFlipped = true;
-    }
-}
-
 function updateMatchedMessage() {
     var message = "Good Luck!";
     if (matched.length == deck.length) {
@@ -122,6 +106,63 @@ function updateMessage(message) {
     document.getElementById("message").innerHTML = message;
 }
 
+function clockTick() {
+    if (startTime > 0) {
+        document.getElementById("time").innerHTML = "Time's A Wastin - " + secondsSinceGameStarted() + " Seconds";
+    }
+}
+
+function secondsSinceGameStarted() {
+    var endTime = new Date().getTime();
+    var timeElapsed = endTime - startTime;
+    var wholeSeconds = Math.round(timeElapsed/1000);
+    return wholeSeconds;
+}
+
+// User Interaction: Clicked On Card
+function cardClicked() {
+    var card = getCardForIndex(this.getAttributeNode("card_index").nodeValue);
+    if (!card.isFlipped) {
+        unflipBadMatch();
+        flipCard(card);
+        flipped.push(card);
+    }
+    checkForMatch();
+    updateMatchedMessage();
+    checkForWin();
+}
+
+function getCardForIndex(index) {
+    for (var i=0; i < deck.length; i++) {
+        var card = deck[i];
+        if (card.index == index) {
+            return card;
+        }
+    } 
+}
+
+function unflipBadMatch() {
+    if (flipped.length == 2) {
+        var card_a = flipped[0];
+        var card_b = flipped[1];
+        flipCard(card_a);
+        flipCard(card_b);   
+        flipped = [];
+    }
+}
+
+function flipCard(card) {
+    if (card.isFlipped) {
+        card.element.classList.remove("flipped");
+        card.element.classList.add("unflipped");
+        card.isFlipped = false;
+    } else {
+        card.element.classList.remove("unflipped");
+        card.element.classList.add("flipped");
+        card.isFlipped = true;
+    }
+}
+
 function checkForMatch() {
     if (flipped.length == 2) {
         var card_a = flipped[0];
@@ -136,29 +177,11 @@ function checkForMatch() {
 
 function checkForWin() {
     if (matched.length == deck.length) {
+        clearInterval(timer);
         var endTime = new Date().getTime();
         var timeElapsed = endTime - startTime;
         var body = {time:timeElapsed};
-        console.log(timeElapsed);
+        document.getElementById("time").innerHTML = "You finished in: " + secondsSinceGameStarted() + " Seconds";
         postResults(body);
     }
-}
-
-function unflipBadMatch() {
-    if (flipped.length == 2) {
-        var card_a = flipped[0];
-        var card_b = flipped[1];
-        flipCard(card_a);
-        flipCard(card_b);   
-        flipped = [];
-    }
-}
-
-function getCardForIndex(index) {
-    for (var i=0; i < deck.length; i++) {
-        var card = deck[i];
-        if (card.index == index) {
-            return card;
-        }
-    } 
 }

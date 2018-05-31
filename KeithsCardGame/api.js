@@ -37,7 +37,6 @@ function postResults(body) {
     xhttp.onreadystatechange = function () {
         var response = JSON.parse(xhttp.responseText);
         var message = response["msg"];
-        console.log(message);
         if (this.readyState === 4 && this.status === 200) {
             updateMessage(message);
         }
