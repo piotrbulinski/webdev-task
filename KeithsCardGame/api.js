@@ -25,7 +25,10 @@ function getAssets() {
         }
     };
     xhttp.onerror = function () {
-        alert('Woops, there was an error making the request.');
+        // TODO: Error Handling
+        // alert('Woops, there was an error making the request.');
+        
+        // Default to hard coded assets (CORS header issue)
         loadStaticAssets();
     };
     xhttp.send();
@@ -43,7 +46,8 @@ function postResults(body) {
         }
     };
     xhttp.onerror = function () {
-        alert('Woops, there was an error making the request.');
+        // TODO: Error Handling
+        // alert('Woops, there was an error making the request.');
     };
     xhttp.send(JSON.stringify(body));  
 }

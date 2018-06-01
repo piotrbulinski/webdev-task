@@ -28,8 +28,7 @@ function playButtonClicked() {
     showLoading();
     getAssets();
     if (initialSetup) {
-        matchSound = new sound("bing.m4a");
-        victorySound = new sound("oooyeah.m4a");
+        loadSounds();
         initialSetup = false;
     }
 }
@@ -54,7 +53,8 @@ function buildCards(array) {
     var cards = [];
     var imageURLs = [];
     var cardIndex = 0;
-    for (var i = 0; i < array.length && i < maxPairs; i++) {
+    var pairs = 0;
+    for (var i = 0; i < array.length && pairs < maxPairs; i++) {
         var imageURL = array[i];
         if (imageURLs.includes(imageURL) === false) {
             imageURLs.push(imageURL);
@@ -62,6 +62,7 @@ function buildCards(array) {
             cardIndex++;
             cards.push(new Card(imageURL,cardIndex));  
             cardIndex++; 
+            pairs++;
         }
     }
     return cards;
@@ -205,6 +206,11 @@ function checkForWin() {
 }
 
 // AUDIO
+
+function loadSounds() {
+    matchSound = new sound("bing.m4a");
+    victorySound = new sound("oooyeah.m4a");
+}
 
 // Reference: https://www.w3schools.com/graphics/game_sound.asp
 function sound(src) {
