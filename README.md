@@ -1,12 +1,16 @@
-#Card Memory Game
+Card Memory Game
+=====================
 
-##Overview
+Overview
+---------------------
 This card memory game was built as a coding assessment for Thought Foundary.
 
-###Issues
+Issues
+---------------------
 The major issue with this application is I could not create it on a server. For that reason I couldn't use AJAX to integrate with swagger.yml or easily contribute commits. I also saw that the assests requested from swagger.yml returned some broken urls, so the game includes movie images from google.
 
-###Understanding The Game
+Understanding The Game
+---------------------
 When the game loads, it will by default put you into an easy game. To change the game mode, select a difficulty from the menu at the top right of the application.
 
 This game functions like any other memory game, but with a few additional features.
@@ -14,7 +18,8 @@ This game functions like any other memory game, but with a few additional featur
 - Time limits for each game mode
 - Match size adjustment
 
-###Function Tree
+Function Tree
+---------------------
 - Event listener for DOMContentedLoaded
 	- loadCardFaces()
 		- wait on game images to load before running loadGame()
