@@ -3,7 +3,7 @@ Card Memory Game
 
 Overview
 ---------------------
-This card memory game was built as a coding assessment for Thought Foundary.
+This card memory game was built as a coding assessment for Thought Foundry.
 
 Issues
 ---------------------
