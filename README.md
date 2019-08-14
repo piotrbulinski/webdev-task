@@ -1,40 +1,79 @@
-Front End Engineering Test
-====================
+Card Memory Game
+=====================
 
-For this test you'll create a mobile version of the memory card game in JavaScript / HTML / CSS.
-
-If you're unfamiliar with the memory card game you can [see an example here](http://igorminar.github.io/Memory-Game/app/index.html).
-
-
-
-Rules
+Overview
 ---------------------
--   You can use any code resource you like but please cite your sources
--   For each game, you need to pull new assets from /assets API (see swagger.yml)
--   After each game, report results using /results API (see swagger.yml) and display returned message on the screen
+This card memory game was built as a coding assessment for Thought Foundry.
 
-
-Deliverables
+Issues
 ---------------------
--   Fully functional site which runs on modern mobile browsers (e.g. mobile safari, chrome for android, etc...)
--   You should provide a README with a brief overview of your project and any other important information
+The major issue with this application is I could not create it on a server. For that reason I couldn't use AJAX to integrate with swagger.yml or easily contribute commits. I also saw that the assests requested from swagger.yml returned some broken urls, so the game includes movie images from google.
 
-
-
-Where to put your code
+Understanding The Game
 ---------------------
--   You should fork this repository and send us a pull request when you're ready to submit your code
--   Please check in your code early and often - we want to see lots of commits with descriptive commit messages
+When the game loads, it will by default put you into an easy game. To change the game mode, select a difficulty from the menu at the top right of the application.
 
+This game functions like any other memory game, but with a few additional features.
+- 4 game modes
+- Time limits for each game mode
+- Match size adjustment
 
-
-Extra Credit
+Function Tree
 ---------------------
--   Bonus points will be awarded for
-    +   engaging interactivity
-    +   clever use of animations / transforms / sounds / etc...
-    +   including a build script
-    +   responsive design / enhanced tablet functionality
-    +   binding UI elements to a data model or external dynamic feed
-    +   minimal use of images
-    +   creativity
+- Event listener for DOMContentedLoaded
+	- loadCardFaces()
+		- wait on game images to load before running loadGame()
+			- loadGame(2,0)
+- loadGame(match_size,difficulty)
+	- resetGame()
+		- clearNotification()
+			- if notification exists, remove
+		- clearTimer()
+			- clear setInterval timer
+		-	return game settings variables back to default values
+		- reset timing on visual element
+		- clear visual card table
+	- setWindowSize()
+		- load in window height and width into doc_size variable  
+	- gameSetup(match_size,difficulty)
+		- set game_settings.match_size to match_size
+		- setDifficulty(difficulty)
+			- set game_settings.difficulty to difficulty
+			- set visual game mode element to active, color of active game mode comes from 'difficulty_color_scheme' variable
+		- loadGameSettings()
+			- set game_settings.stack_size, game_settings.cols, game_settings.rows
+		- loadCardSize()
+			- generate card size to fit screen
+		- createCardStack()
+			- loop over card_faces and insert into 'cards' x:match_size times. Insert location is random and found using recursive function insertIntoStack()
+			- insertIntoStack()
+		- createGameLayout()
+			- adjust pre-defined HTML elements to fit the screen (main container, game controls, stack for dealing cards size)
+		- placeCards()
+			- create elements for each card and place in the card stack (where cards are dealt from)
+			- each element is attached with an ontouchstart and onclick event that call playGame(this)
+				- playGame(element)
+					- this function controls all card functions:
+						- check if card is ope, flipped, or game running is false and return false
+						- if match fails, return cards to closed
+						- if the difficulty is above medium and match fails, swapCards()
+							- swapCards()
+								- grab a random open card and swap it with a random closed card
+						- open selected card and push to open card array
+						- if cards match, keep flipped and add to flipped array
+						- if flipped cards length matchs size of card stack, end game
+							- clearTimer()
+							- set game running status to false
+							- notify('You Win!')
+	- setupGame() called on 1ms delay
+		- on a delay, move each card to its table position
+		- when all card positions have been set, startGame()
+		- startGame()
+			- notify('Begin!')
+			- when notification ends, set game running status to true and startTimer()
+			- startTimer()
+				- clearTimer()
+					- ran in this location incase a new game is started while another game is running
+				- set length of time for game from game_settings.timer.map[game_settings.difficulty]
+				- setInterval that runs ever second to update game time and end game if time == 0
+					- notify('Game Over!')
